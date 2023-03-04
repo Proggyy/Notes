@@ -12,6 +12,7 @@ namespace NotesApp
     public class NotesViewModel
     {
         #region Приватные поля
+        string file = "notes.xml";
         Window window;
         ListView ListView;
         BindingList<Note> notes;
@@ -33,9 +34,10 @@ namespace NotesApp
         /// <param name="listView">Графический список элементов</param>
         public NotesViewModel(Window window, ListView listView)
         {
-            if (File.Exists("notes.xml"))
+            if (File.Exists(file))
             {
                 notes = Deserialize();
+                File.Delete(file);
             }
             else
             {
@@ -93,8 +95,7 @@ namespace NotesApp
         /// </summary>
         private void Serialize()
         {
-            XmlSerializer xmls = new XmlSerializer(typeof(BindingList<Note>));
-            using (FileStream fs = new FileStream("notes.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
                 {
                     xmls.Serialize(fs, notes);
                 }
@@ -106,9 +107,8 @@ namespace NotesApp
         /// <returns>Коллекция элементов из xml документа</returns>
         private BindingList<Note> Deserialize()
         {
-            XmlSerializer xmls = new XmlSerializer(typeof(BindingList<Note>));
             BindingList<Note> DeserializedList = new BindingList<Note>();
-            using (FileStream fs = new FileStream("notes.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
             {
                 DeserializedList = xmls.Deserialize(fs) as BindingList<Note>;
             }
