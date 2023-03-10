@@ -88,7 +88,7 @@ namespace NotesApp
             });
             checkWindow.BackButton.Command = new Command(() => checkWindow.Close());
 
-            checkWindow.Show();
+            checkWindow.ShowDialog();
         }
 
         /// <summary>
